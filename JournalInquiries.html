@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="node_modules/web3/dist/web3.min.js"></script>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+
+    <link rel="stylesheet" href="css/reset.css" type="text/css" media="all">
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="all">
+
+    <script type="text/javascript" src="js/jquery-1.4.2.min.js" ></script>
+    <script type="text/javascript" src="js/cufon-yui.js"></script>
+    <script type="text/javascript" src="js/cufon-replace.js"></script>
+    <script type="text/javascript" src="js/Myriad_Pro_300.font.js"></script>
+    <script type="text/javascript" src="js/Myriad_Pro_400.font.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+</head>
+
+<body id="page5">
+<div class="wrap">
+    <!-- header -->
+    <header>
+        <div class="container">
+            <h1><a href="index.html">HuangStudio</a></h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="m1">简介</a></li>
+                    <li><a href="research.html" class="m2">成果</a></li>
+                    <li><a href="member.html" class="m3">成员</a></li>
+                    <li><a href="contact-us.html" class="m4">联系方式</a></li>
+                    <li class="current"><a href="JournalInquiries.html" class="m5">期刊查询</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="container">
+
+        <div class="jumbotron">
+            <h2 align="center">区块链期刊查询系统</h2>
+            <h4 align="center"><a href="https://www.onlinehashcrack.com/tools-pdf-hash-extractor.php" target="_blank">Hash生成工具：https://www.onlinehashcrack.com/tools-pdf-hash-extractor.php</a> </h4>
+
+        </div>
+
+        <!--    <div class="jumbotron">
+                <form class="bs-example bs-example-form" role="form">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="input-group input-group-lg">
+                                    <span class="input-group-btn">
+                                        <button id="setValue" class="btn btn-default btn btn-danger" type="button">
+                                            存入文件哈希值：
+                                        </button>
+                                    </span>
+                                <input type="text" class="form-control" id="txtValue">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>-->
+
+
+        <div class="jumbotron">
+            <form class="bs-example bs-example-form" role="form">
+                <div class="row">
+                    <div class="col-4">
+                        <h2>请输入文件名：</h2>
+                    </div>
+                    <div class="col-8">
+                        <input type="text" class="form-control" id="txt1Value">
+                    </div>
+                </div>
+                <button class="btn btn-default  btn-success " type="button" id="getValue" style="display:block;margin:10px auto">提交
+                </button>
+            </form>
+        </div>
+        <div class="jumbotron">
+            <form class="bs-example bs-example-form" role="form">
+                <div class="row">
+                    <div class="col-4">
+                        <h2>查询结果：</h2>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">文件哈希</span>
+                        <textarea type="text" class="form-control" id="spanValue1"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">论文信息</span>
+                        <textarea type="text" class="form-control" id="spanValue2"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">论文名称</span>
+                        <textarea type="text" class="form-control" id="spanValue3"></textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 ">
+                <div id="msg" class="alert alert-danger"></div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<script>
+    if(typeof web3 !== 'undefined'){
+        web3 = new Web3(web3.currentProvider);
+    }else {
+        web3 = new Web3(new Web3.providers.HttpProvider("http://101.42.107.28:8545"));
+    }
+
+    //读取合约的ABI信息
+    var data = $.ajax({ url: "./Storage.json", async: false }).responseText;
+
+    //创建合约对象，使用的合约地址是我们刚创建的合约地址
+    var contract = new web3.eth.Contract(JSON.parse(data), '0xB039671ED637396CD2f53D79e061cB650B124e7d');
+
+
+    $("#setValue").click(function () {
+        try {
+            ethereum.enable();
+            contract.methods.saveEvidence($("#txtValue").val()).send({ from: '0x550007000e10B4F97b9FBBa36aB805e2D2205F40' });
+            $("#msg").text("设置值成功！");
+        }
+        catch (err) {
+            $("#msg").text("设置值失败：" + err.message);
+        }
+    });
+    // 获取事件对象
+    $("#getValue").click(function () {
+
+            contract.methods.getEvidence($("#txt1Value").val()).call({from:'0x550007000e10B4F97b9FBBa36aB805e2D2205F40'},function (error,result) {
+                if(!error) {
+                    $("#spanValue1").html(result[0]);
+                    $("#spanValue2").html(result[1]);
+                    $("#spanValue3").html(result[2]);
+                    $("#msg").text("查询成功！");
+                }else {
+                    $("#msg").text("查询失败：" + error.message);
+                }
+
+            });
+
+    });
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1 @@
+geth --datadir data --rpc -rpcaddr "10.0.16.17" -rpcport "8545" -port "30331" -rpcapi "eth,web3,miner,admin,personal,net"  --rpccorsdomain "*" --networkid 807807 --nodiscover --gcmode archive console

@@ -1,0 +1,18 @@
+{
+  "name": "studyweb3test",
+  "version": "1.0.0",
+  "main": "text.js",
+  "scripts": {
+    "dev": "lite-server",
+    "start": "lite-server"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "web3": "^1.6.1"
+  },
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  },
+  "description": ""
+}
